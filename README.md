@@ -6,4 +6,4 @@ Example output: one hundred and twenty three million fourhundred fifty six thous
 *Only works with integers up to 15 digits long
 *Only converts to English.
 
-** Work on adding a decimal nnumbers and other languages is ongoig
+** Work on adding decimal numbers conversion and other languages is ongoig
