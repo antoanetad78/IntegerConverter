@@ -48,7 +48,7 @@ const ranges = {
 //Example output: [ [ '1', '2', '3' ], [ '4', '5', '6' ], [ '7', '8', '9' ] ]
 const separate = arr => {
   const newArr = [];
-  const arr1 = arr;
+  const arrCopy = arr;
   const separator = arr => {
     if (arr.length <= 3) {
       return newArr.unshift(arr);
@@ -57,7 +57,7 @@ const separate = arr => {
     newArr.unshift(tempArr);
     separator(arr);
   };
-  separator(arr1);
+  separator(arrCopy);
   return newArr;
 };
 
