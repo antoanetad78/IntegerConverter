@@ -43,9 +43,13 @@ const ranges = {
   "5": " quadrillion "
 };
 
-//A functions that takes an array, divides it into three-element arrays and returns an array of the new arrays
-//Example input: [ '1', '2', '3', '4', '5', '6', '7', '8', '9' ]
-//Example output: [ [ '1', '2', '3' ], [ '4', '5', '6' ], [ '7', '8', '9' ] ]
+const decimalRanges = {
+  "1": "tenths",
+  "2": "hundredths",
+  "3": "thousandths",
+  "4": "ten-thousandths"
+};
+
 const separate = arr => {
   const newArr = [];
   const arrCopy = arr;
@@ -61,15 +65,47 @@ const separate = arr => {
   return newArr;
 };
 
+function adjustDecimalToPrecision(number, precision) {
+  try {
+    let numberCopy = number.toString(10);
+    const numberCopyArray = numberCopy.split(".");
+
+    typeof precision !== "number" && numberCopyArray.length > 1
+      ? (precisionCopy = numberCopyArray[1].length)
+      : (precisionCopy = precision);
+
+    numberCopy = Number(numberCopy).toFixed(precisionCopy);
+
+    const splitFinalNumber = numberCopy.split(".");
+
+    let int = Number(splitFinalNumber[0]);
+    let dec = Number(splitFinalNumber[1]);
+
+    return [int, dec, precisionCopy];
+  } catch (err) {
+    console.log(err.message);
+    return err.message;
+  }
+}
+
+const useDecimalRange = num => {
+  switch (num) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return decimalRanges[num];
+    default:
+      break;
+  }
+};
 const baseConvert = arr => {
   const hundred = arr[0];
   const ten = arr[1];
   const one = arr[2];
 
   let converted = [];
-  // if (hundred === 0 && ten === 0 && one === 0) {
-  //   // return (converted = converted.concat(zero));
-  // }
+
   if (hundred === 0) {
     if (ten === 0) {
       return (converted = converted.concat(ones[one]));
@@ -78,13 +114,13 @@ const baseConvert = arr => {
         return (converted = converted.concat(teens[one]));
       }
       if (ten === 1 && one === 0) {
-        return (converted = converted.concat(ten[ten]));
+        return (converted = converted.concat(tens[ten]));
       }
       if (ten > 1 && one === 0) {
-        return (converted = converted.concat(ten[ten]));
+        return (converted = converted.concat(tens[ten]));
       }
       if (ten > 1 && one > 0) {
-        return (converted = converted.concat(ten[ten] + " " + ones[one]));
+        return (converted = converted.concat(tens[ten] + " " + ones[one]));
       }
     }
   }
@@ -100,7 +136,7 @@ const baseConvert = arr => {
   if (hundred > 0 && ten === 1) {
     if (one === 0) {
       return (converted = converted.concat(
-        ones[hundred] + " hundred and " + ten[ten]
+        ones[hundred] + " hundred and " + tens[ten]
       ));
     } else {
       return (converted = converted.concat(
@@ -111,24 +147,23 @@ const baseConvert = arr => {
   if (hundred > 0 && ten > 1) {
     if (one === 0) {
       return (converted = converted.concat(
-        ones[hundred] + " hundred and " + ten[ten]
+        ones[hundred] + " hundred and " + tens[ten]
       ));
     } else {
       return (converted = converted.concat(
-        ones[hundred] + " hundred and " + ten[ten] + " " + ones[one]
+        ones[hundred] + " hundred and " + tens[ten] + "-" + ones[one]
       ));
     }
   }
   return converted;
 };
 
-// Checks if all elements of the given array are zeros, returns true / false
 const isZero = arr =>
   arr.reduce((acc, curr) => {
     curr === 0 ? acc : (acc = false);
     return acc;
   }, true);
-//Takes an array and fills it up with leading zeros untill the lenght of the array is 3
+
 const fillUpArrayWithLeadingZeros = arr => {
   for (let i = arr.length; i < 3; i++) {
     arr.unshift(0);
@@ -136,24 +171,16 @@ const fillUpArrayWithLeadingZeros = arr => {
   return arr;
 };
 
-//Converts an array of numerical strings to an array of numbers
 const numericalSringArrayToNumberArray = arr => {
   return arr.map(el => Number(el));
 };
 
-const convertNumber = num => {
+const convertInteger = num => {
   try {
-    if (typeof num !== "number") {
-      throw new Error(
-        " Please provide a valid number. Valid is a number of up to 15 numerical characters"
-      );
-    }
     const numToString = num.toString(10);
 
     if (numToString.length > 15) {
-      throw new Error(
-        " The number is too large. Please use a number of up to 15 digits."
-      );
+      throw new Error(" The number is too large.");
     } else {
       const numToString = num.toString(10);
       const numToStringArray = numToString.split("");
@@ -206,6 +233,41 @@ const convertNumber = num => {
     return err;
   }
 };
-
-module.exports = convertNumber;
-convertNumber(2000502);
+const spellNumber = (number, precision) => {
+  try {
+    let numberCopy = number.valueOf();
+    if (typeof numberCopy !== "number") {
+      throw new Error(" Argument should be a number ");
+    }
+    if (Number.isInteger(number)) {
+      return convertInteger(number);
+    } else {
+      numberCopy = numberCopy.toString(10);
+    }
+    const numberCopyArray = numberCopy.split(".");
+    if (numberCopyArray[1] && numberCopyArray[1].length > 4) {
+      throw new Error(
+        "Please provide only numbers with up to four decimal digits"
+      );
+    } else {
+      let getNumberArray;
+      getNumberArray = [...adjustDecimalToPrecision(number, precision)];
+      const integerPortion = getNumberArray[0];
+      let decimalPortion = getNumberArray[1];
+      const precisionCopy = getNumberArray[2];
+      const spelledNumber =
+        convertInteger(integerPortion) +
+        " and " +
+        convertInteger(decimalPortion) +
+        " " +
+        useDecimalRange(precisionCopy);
+      console.log(spelledNumber);
+      return spelledNumber;
+    }
+  } catch (err) {
+    console.log(err.message);
+    return err.message;
+  }
+};
+spellNumber(104.2);
+module.exports = convertInteger;
