@@ -83,7 +83,6 @@ function adjustDecimalToPrecision(number, precision) {
 
     return [int, dec, precisionCopy];
   } catch (err) {
-    console.log(err.message);
     return err.message;
   }
 }
@@ -197,7 +196,6 @@ const convertInteger = num => {
         isZero(numberSplittedIntoRangesArray)
           ? (converted = zero)
           : (converted = baseConvert(numberSplittedIntoRangesArray).join(" "));
-        console.log(converted);
         return converted;
       }
       numberSplittedIntoRangesArray.reverse();
@@ -225,12 +223,10 @@ const convertInteger = num => {
         []
       );
       converted = converted.join(" ");
-      console.log(converted);
       return converted;
     }
   } catch (err) {
-    console.log(err.message);
-    return err;
+    return err.message;
   }
 };
 const spellNumber = (number, precision) => {
@@ -261,11 +257,9 @@ const spellNumber = (number, precision) => {
         convertInteger(decimalPortion) +
         " " +
         useDecimalRange(precisionCopy);
-      console.log(spelledNumber);
       return spelledNumber;
     }
   } catch (err) {
-    console.log(err.message);
     return err.message;
   }
 };
@@ -284,5 +278,3 @@ function handleInput() {
   button.onclick = handleClick;
 }
 window.onload = handleInput;
-
-// module.exports = convertInteger;
