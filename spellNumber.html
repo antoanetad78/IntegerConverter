@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="NumberSpellingConverter.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Spell Number - convert a number into words</title>
+</head>
+
+<body>
+    <header>
+        <h1>Spell a number - convert number to words</h1>
+    </header>
+    <div class="container">
+        <section class='instructions_container d-grid color-dark'>
+            <h2>Instructions</h2>
+            <p>This converter will take a valid integer or decimal number and convert it into its spelled form.
+                Valid number is a number of up to 15 digits long integer part and (optional) up to 4 digits long
+                decimal
+                part. Decimal divider is dot (.)</p>
+            <ul>
+                <li>Enter a valid number in the field.</li>
+                <li>Click "Convert".</li>
+                <li>The result will display in the field below the input field.</li>
+            </ul>
+        </section>
+        <section class='input_container d-grid'>
+
+            <label for="number" class='color-dark'>
+                Enter a number in the field below:
+            </label>
+            <input type="number" name="number" id="numberField" class='field' value='0'>
+            <button id='convert' class='button' onclick="handleInput">Convert</button>
+        </section>
+        <section class='output_container d-grid'>
+            <h2>In words, your number is spelled:</h2>
+            <p id='result'></p>
+        </section>
+
+    </div>
+    <footer></footer>
+</body>
+
+</html>

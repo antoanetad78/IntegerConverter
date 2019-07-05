@@ -269,5 +269,20 @@ const spellNumber = (number, precision) => {
     return err.message;
   }
 };
-spellNumber(104.2);
-module.exports = convertInteger;
+
+function handleInput() {
+  const button = document.getElementById("convert");
+  let result = document.getElementById("result");
+  function handleClick() {
+    button.addEventListener("click", e => {
+      let numberInput = document.getElementById("numberField").value;
+      numberInput = Number(numberInput);
+      const spelled = spellNumber(numberInput);
+      result.innerHTML = spelled;
+    });
+  }
+  button.onclick = handleClick;
+}
+window.onload = handleInput;
+
+// module.exports = convertInteger;
